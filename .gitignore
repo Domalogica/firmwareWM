@@ -1,0 +1,26 @@
+# IAR Settings  
+*.crun  
+*.dbgdt  
+*.cspy  
+*.cspy.*
+*.xcl  
+*.dni  
+*.wsdt  
+*.wspos  
+
+# IAR Debug Exe  
+*.sim  
+
+*.o
+*.dep
+*.ewt
+*.ewd
+*.browse
+*.bat
+*.mxproject
+
+# IAR Debug Obj  
+*.pbd  
+*.pbd.*  
+*.pbi  
+*.pbi.*  
