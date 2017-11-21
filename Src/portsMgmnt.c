@@ -161,7 +161,7 @@ void checkContainerFull() {
   static timeStr noSenseTime = {0};
   static bool firstExe = false;
   
-  bool inNoTareState = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_3);
+  bool inNoTareState = HAL_GPIO_ReadPin(NINT_IN20_GPIO_Port, NINT_IN20_Pin);
   
   if (getTimeDiff(noSenseTime) < NO_SENSE_TIME_AFTER_TRIGGER) return;
   

@@ -327,9 +327,6 @@ uint16_t parseUartData(uint8_t * uartTXBuf) {
       txByteCounter += writeError(0);
       // TO DO - show data on LCD
     }
-    if(mesRx[1] == 'k'){
-      valFor10LitOutCalibr = strtol(&mesRx[2], NULL, 10);      
-    }
     return txByteCounter;
   }
   if (mesRx[0] == 'm') {

@@ -74,20 +74,46 @@ timeStr timeConsPumpStarted;
 static noTareStageEnum noTareStage = THREE;
 timeStr waterMissDetectedTime;
 
-static uint32_t lastMilLitWentOut = 0;          // показания выходного миллитрового счетчика, когда было завершено последнее обслуживание 
+// показания выходного миллитрового счетчика, когда было завершено последнее обслуживание 
+static uint32_t lastMilLitWentOut = 0;
 
-machineParameters wa;                           // состояние автомата
-filtersStr filters;                             // показания счетчиков (приходят по UART)
-moneyStats money;                               // оплачено за все время, оплачено сейчас, осталось отработать
+// состояние автомата
+machineParameters wa;
+
+// показания счетчиков (приходят по UART)
+filtersStr filters;
+
+// оплачено за все время, оплачено сейчас, осталось отработать
+moneyStats money;
+
 counters cnt = {0};
 
-uint32_t valFor10LitInCalibr = 4296;            // количество импульсов расходомера на 10Л. используется для расчетов объема поступившей воды, перелива и воду вне тары
-uint32_t valFor10LitOutCalibr = 3850;           // количество импульсов расходомера на 10Л. используется для расчетов объема выдачи воды
-float waterPrice = 400.0;                       // цена литра, в копейках
-uint8_t outPumpNoWaterStopTime = 30;            // секунд до остановки выходного насоса, если нет воды
-uint8_t startContVolume = 15;                   // минимальный объем воды в контейнере
-uint8_t containerMinVolume = 3;                 // минимальный объем воды в контейнере
-uint8_t maxContainerVolume = 95;                // объем контейнера с водой
+/* 
+ * количество импульсов расходомера на 10Л. 
+ * используется для расчетов объема поступившей воды, перелива и воду вне тары
+ */
+uint32_t valFor10LitInCalibr = 4296;
+
+/*
+ * количество импульсов расходомера на 10Л. 
+ * используется для расчетов объема выдачи воды
+ */
+uint32_t valFor10LitOutCalibr = 3850;           
+
+// цена литра, в копейках
+float waterPrice = 400.0;
+
+// секунд до остановки выходного насоса, если нет воды
+uint8_t outPumpNoWaterStopTime = 30;
+
+// минимальный объем воды в контейнере
+uint8_t startContVolume = 15;
+
+// минимальный объем воды в контейнере
+uint8_t containerMinVolume = 3;
+
+// объем контейнера с водой
+uint8_t maxContainerVolume = 95;
 
 /* USER CODE END PV */
 
@@ -220,24 +246,41 @@ void outPumpMgmnt() {
 
 void lcdMgmnt() {
   static timeStr refreshLCDtime = {0};
+  
   if (getTimeDiff(refreshLCDtime) > 250) {
     writeTime(&refreshLCDtime);
-    if (wa.machineState == NOT_READY)   printNotReady(wa.currentContainerVolume);
-    if (wa.machineState == WAIT)        printWait(wa.currentContainerVolume);
-    if (wa.machineState == JUST_PAID)   {
+    
+    if (wa.machineState == NOT_READY)
+      printNotReady(wa.currentContainerVolume);
+    
+    if (wa.machineState == WAIT)
+      printWait(wa.currentContainerVolume);
+    
+    if (wa.machineState == JUST_PAID){
       uint32_t temp = money.sessionPaid;        // avoid undefined behavior warning
       printPaid(temp/100, (uint16_t)(((float)temp*10.0)/waterPrice));
     }
+    
     if (wa.machineState == WORK) {
       bool pause = !(bool)wa.consumerPump;
       wa.litersLeftFromSession = (uint32_t)((money.leftFromPaid*10.0)/waterPrice);
       printGiven((uint32_t)wa.litersLeftFromSession, (cnt.milLitWentOut - lastMilLitWentOut) / 100, (uint32_t) money.leftFromPaid/100, pause);
     }
-    if (wa.machineState == NO_TARE)     printLoseDetected();
-    if (wa.machineState == CONFIG)      TM_HD44780_Clear();
-    if (wa.machineState == WASH_FILTER) TM_HD44780_Clear();
-    if (wa.machineState == SERVICE)     TM_HD44780_Clear();
-    if (wa.machineState == FREE)        TM_HD44780_Clear();
+    
+    if (wa.machineState == NO_TARE)
+      printLoseDetected();
+    
+    if (wa.machineState == CONFIG)
+      TM_HD44780_Clear();
+    
+    if (wa.machineState == WASH_FILTER)
+      TM_HD44780_Clear();
+    
+    if (wa.machineState == SERVICE)
+      TM_HD44780_Clear();
+    
+    if (wa.machineState == FREE)
+      TM_HD44780_Clear();
   }
 } 
 
@@ -317,20 +360,21 @@ void HAL_WWDG_EarlyWakeupCallback(WWDG_HandleTypeDef* hwwdg) {
 
 uint32_t getNoTareProtTime (noTareStageEnum noTare) {
   switch (noTare) {
-    case ZERO:    return 3000;
-                  break;
-    case THREE:   return 3000;
-                  break;
-    case FIVE:    return 5000;
-                  break;
-    case FIFTEEN: return 15000;
-                  break;
-    case THIRTY:  return 30000;
-                  break;
-    case SIXTY:   return 60000;
-                  break;
+    case ZERO:
+      return 3000;                 
+    case THREE:
+      return 3000;
+    case FIVE:
+      return 5000;
+    case FIFTEEN: 
+      return 15000;
+    case THIRTY:
+      return 30000;
+    case SIXTY:  
+      return 60000;
+  default: 
+    return 60000;
   }
-  return 0;
 }
 
 /* USER CODE END 0 */
@@ -396,18 +440,20 @@ int main(void)
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 #endif
 #ifdef NON_STANDART_FULL_CONTAINER_COUNTER
-  HAL_GPIO_DeInit (GPIOE, GPIO_PIN_3);
+  HAL_GPIO_DeInit (NINT_IN20_GPIO_Port, NINT_IN20_Pin);
   GPIO_InitTypeDef GPIO_InitStruct2;
-  GPIO_InitStruct2.Pin = GPIO_PIN_3;
+  GPIO_InitStruct2.Pin = NINT_IN20_Pin;
   GPIO_InitStruct2.Pull = GPIO_PULLUP;
   GPIO_InitStruct2.Mode = GPIO_MODE_INPUT;
-  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct2);
+  HAL_GPIO_Init(NINT_IN20_GPIO_Port, &GPIO_InitStruct2);
 #endif
+  
+  
   COOLER_ON();
   HAL_ADCEx_InjectedStart(&hadc1);
   setupDefaultLitersVolume(50);
   //__HAL_RCC_WWDG_CLK_ENABLE();
-  __HAL_IWDG_START(&hiwdg);
+  //__HAL_IWDG_START(&hiwdg);
   
   while (1)
   {

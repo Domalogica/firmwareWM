@@ -607,11 +607,11 @@
         </option>
         <option>
           <name>OCOutputOverride</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>OOCOutputFile</name>
-          <state>IAR_WM_v0.11.hex</state>
+          <state>firmwareWM.hex</state>
         </option>
         <option>
           <name>OOCCommandLineProducer</name>
