@@ -23,4 +23,8 @@
 *.pbd  
 *.pbd.*  
 *.pbi  
-*.pbi.*  
+*.pbi.*
+
+*.hex
+*.map
+*.out
