@@ -140,8 +140,12 @@ static void MX_WWDG_Init(void);
 
 void containerMgmnt() {
   wa.currentContainerVolume = (cnt.milLitContIn - cnt.milLitWentOut - cnt.milLitloseCounter) / 10;
-  if (cnt.milLitWentOut + (maxContainerVolume-5)*1000 > cnt.milLitContIn) wa.container = NOT_FULL;
+  
+  if (cnt.milLitWentOut + (maxContainerVolume-5)*1000 > cnt.milLitContIn)
+    wa.container = NOT_FULL;
+  
   checkMagistralPressure();
+  
   
   static bool noInWater = false;
   static timeStr inPumpStopped = {0};
@@ -154,7 +158,7 @@ void containerMgmnt() {
         if (wa.magistralPressure == HI_PRESSURE) {
           MAINV_ON();
           MAINP_ON();
-  //        FILTV_ON();
+  //        WASH_FILV_OFF();
         }
       }
     }
@@ -172,7 +176,7 @@ void containerMgmnt() {
     if (wa.mainPump != STOPPED) {
       MAINP_OFF();
       MAINV_OFF();
-//      FILTV_OFF();
+      WASH_FILV_OFF();
     }
     if (getTimeDiff(inPumpStopped) > 5*60*1000) noInWater = false;
   }
@@ -181,7 +185,7 @@ void containerMgmnt() {
     if (wa.mainPump != STOPPED) {
       MAINP_OFF();
       MAINV_OFF();
-//      FILTV_OFF();
+      WASH_FILV_OFF();
     }
   }
 }

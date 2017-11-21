@@ -115,7 +115,23 @@ void checkNoTare() {
   static timeStr noSenseTime = {0};
   static bool firstExe = false;
   
-  bool inNoTareState = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_4);
+  bool inNoTareState = 0; 
+  static uint8_t flterSignal[10] = {1};
+  static int indexFilter = 0;
+  
+  flterSignal[indexFilter++] = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_4);
+  if (indexFilter > 9) 
+    indexFilter = 0;
+  
+  uint8_t temp = 0;
+  for (int i = 0; i < 9; i++){
+    temp += (uint8_t)flterSignal[i];
+  }
+  
+  inNoTareState = !(temp == 0);
+
+  
+  
   
   if (getTimeDiff(noSenseTime) < NO_SENSE_TIME_AFTER_TRIGGER) return;
   
@@ -161,7 +177,20 @@ void checkContainerFull() {
   static timeStr noSenseTime = {0};
   static bool firstExe = false;
   
-  bool inNoTareState = HAL_GPIO_ReadPin(NINT_IN20_GPIO_Port, NINT_IN20_Pin);
+  static bool inNoTareState = 0; 
+  static uint8_t flterSignal[10] = {1};
+  static int indexFilter = 0;
+  
+  flterSignal[indexFilter++] = HAL_GPIO_ReadPin(NINT_IN20_GPIO_Port, NINT_IN20_Pin);
+  if (indexFilter > 9) 
+    indexFilter = 0;
+  
+  uint8_t temp = 0;
+  for (int i = 0; i < 9; i++){
+    temp += (uint8_t)flterSignal[i];
+  }
+  
+  inNoTareState = !(temp == 0);
   
   if (getTimeDiff(noSenseTime) < NO_SENSE_TIME_AFTER_TRIGGER) return;
   

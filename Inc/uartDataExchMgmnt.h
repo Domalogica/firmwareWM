@@ -7,6 +7,6 @@ void uartDataExchMgmnt(void);
 
 void initUART(void);
 
-void txSmthngUART();
+
 
 #endif

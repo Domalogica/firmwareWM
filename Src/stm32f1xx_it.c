@@ -318,7 +318,7 @@ void TIM3_IRQHandler(void)
   checkFreeMode();
   checkMagistralPressure();
   checkOut10Counter();
-  checkInput10Counter();
+  //checkInput10Counter();
   
   static pumpEnum lastConsumPump = STOPPED;
   static uint16_t millisCounter = 0;

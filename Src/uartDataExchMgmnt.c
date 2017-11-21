@@ -311,9 +311,13 @@ uint16_t parseUartData(uint8_t * uartTXBuf) {
       INHIBIT_EN();
     }
     if (mesRx[1] == 'm') {
-      if (getMessageLnhgt() > 3) txByteCounter += writeError(3);
-      if (getMessageLnhgt() < 3) txByteCounter += writeError(2);
-      if (getMessageLnhgt() == 3) {      
+      if (getMessageLnhgt() > 3)
+        txByteCounter += writeError(3);
+      
+      if (getMessageLnhgt() < 3)
+        txByteCounter += writeError(2);
+      if (getMessageLnhgt() == 3)
+      {      
         txByteCounter += returnMoney(&uartTXBuf[0]);
         //money.totalPaid += money.sessionPaid - money.leftFromPaid
         wa.machineState = WAIT;
@@ -323,7 +327,8 @@ uint16_t parseUartData(uint8_t * uartTXBuf) {
         money.leftFromPaid = 0.0;
       }
     }
-    if (mesRx[1] == 't') {  
+    if (mesRx[1] == 't')
+    {  
       txByteCounter += writeError(0);
       // TO DO - show data on LCD
     }
@@ -344,6 +349,4 @@ void parseUART() {
   clrLastMessage();
 }
 
-void txSmthngUART() {
-  HAL_UART_Transmit(&huart1, "Hello!                                               ", 50, 50000);
-}
+
