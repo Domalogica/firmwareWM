@@ -68,7 +68,7 @@
 #define CONSUMP_ON()            do {wa.consumerPump = WORKING; disableSensorsForTime(); } while(0)
 #define CONSUMP_OFF()           do {wa.consumerPump = STOPPED; disableSensorsForTime(); } while(0)
 #define MAINV_ON()              do {wa.mainValve = OPENED; disableSensorsForTime(); MAIN_VALVE_SET();} while(0)             
-#define MAINV_OFF()  do {wa.mainValve = CLOSED; disableSensorsForTime(); MAIN_VALVE_CLR();} while(0)             
+#define MAINV_OFF()             do {wa.mainValve = CLOSED; disableSensorsForTime(); MAIN_VALVE_CLR();} while(0)             
 #define WASH_FILV_ON()          do {wa.washFilValve = OPENED; disableSensorsForTime(); WASH_FILV_SET();} while(0)             
 #define WASH_FILV_OFF()         do {wa.washFilValve = CLOSED; disableSensorsForTime(); WASH_FILV_CLR();} while(0)       
 #define WARM_ON()               do {wa.warmer = TURNED_ON; disableSensorsForTime(); WARM_SET();} while(0)             
@@ -86,18 +86,20 @@
 #define READ_10L_OUT()          HAL_GPIO_ReadPin(NINT_IN20_GPIO_Port, NINT_IN20_Pin)            // 3, R5, PD2
 #define READ_10L_IN()           HAL_GPIO_ReadPin(NINT_IN19_GPIO_Port, NINT_IN19_Pin)            // 2, R6, PD1
 
-#define R_ON()                  OUT9SET()
-#define R_OFF()                 OUT9CLR()
-#define G_ON()                  OUT8SET()
-#define G_OFF()                 OUT8CLR()
-#define B_ON()                  OUT10SET()
-#define B_OFF()                 OUT10CLR()
+#define R_ON() OUT9SET()
+#define R_OFF() OUT9CLR()
 
-#define COOLER_ON()             OUT4SET()
-#define COOLER_OFF()            OUT4CLR()
+#define G_ON() OUT8SET()
+#define G_OFF() OUT8CLR()
 
-#define GLOBAL_LGHT_ON()        MOSFET2_ON()
-#define GLOBAL_LGHT_OFF()       MOSFET2_OFF()
+#define B_ON() OUT10SET()
+#define B_OFF() OUT10CLR()
+
+#define COOLER_ON() OUT4SET()
+#define COOLER_OFF() OUT4CLR()
+
+#define GLOBAL_LGHT_ON() MOSFET2_ON()
+#define GLOBAL_LGHT_OFF() MOSFET2_OFF()
 
 void checkTumperDoor();
 void checkMagistralPressure();

@@ -15,8 +15,11 @@ extern counters cnt;
 extern uint32_t valFor10LitInCalibr, valFor10LitOutCalibr;
 extern uint8_t maxContainerVolume;                      // объем контейнера с водой
 
-volatile bool userButton = false,       servUpButton = false,           servDownButton = false,
-              servLeftButton = false,   servRightButton = false;
+volatile bool userButton = false;
+volatile bool servUpButton = false;
+volatile bool servDownButton = false;
+volatile bool servLeftButton = false;
+volatile bool servRightButton = false;
 
 timeStr buttonsDisabledTime = {0}, sensorsDisabledTime = {0};
 volatile uint32_t counterContIn = 0;

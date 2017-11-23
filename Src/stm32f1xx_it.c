@@ -364,7 +364,7 @@ void TIM3_IRQHandler(void)
       else TURN_BUT_LED_OFF();
     }
   }
-  
+  /*
   // manage PWM for lght
   if (time.msec % 10 >= 10 - wmLghts.r) R_ON();
   else R_OFF();
@@ -374,7 +374,7 @@ void TIM3_IRQHandler(void)
   else B_OFF();
   if (time.msec % 10 >= 10 - wmLghts.global) GLOBAL_LGHT_ON();
   else GLOBAL_LGHT_OFF();
-  
+  */
   /* USER CODE END TIM3_IRQn 1 */
 }
 

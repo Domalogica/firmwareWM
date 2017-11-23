@@ -98,7 +98,7 @@ uint32_t valFor10LitInCalibr = 4296;
  * количество импульсов расходомера на 10Л. 
  * используется для расчетов объема выдачи воды
  */
-uint32_t valFor10LitOutCalibr = 3850;           
+uint32_t valFor10LitOutCalibr = 4810;
 
 // цена литра, в копейках
 float waterPrice = 400.0;
@@ -193,21 +193,14 @@ void containerMgmnt() {
 void buttonMgmnt(){
   timeStr time = getCurTime();
   if (wa.machineState == NOT_READY) TURN_BUT_LED_OFF();
-  if (wa.machineState == WAIT) {
-    uint8_t secTenFrac = time.sec % 20;
-    if (secTenFrac > 10) TURN_BUT_LED_ON();
-    else {
-      secTenFrac /= 2;
-      if (secTenFrac % 2 == 1) TURN_BUT_LED_OFF();
-      else {
-        if (time.msec / 5 < 100) TURN_BUT_LED_OFF();
-        else TURN_BUT_LED_ON();
-      }
-    }
-  }  
+  if (wa.machineState == WAIT) 
+    TURN_BUT_LED_ON();
+  
   if (wa.machineState == NO_TARE)     {
-    if (time.msec %250 > 125) TURN_BUT_LED_ON();
-    else TURN_BUT_LED_OFF();
+    if (time.msec %250 > 125)
+      TURN_BUT_LED_ON();
+    else
+      TURN_BUT_LED_OFF();
   }
   if (wa.machineState == CONFIG)      TURN_BUT_LED_OFF();
   if (wa.machineState == WASH_FILTER) TURN_BUT_LED_OFF();
@@ -290,7 +283,7 @@ void lcdMgmnt() {
 
 void lghtsMgmnt() {
   setGlobal(10);
-  timeStr time = getCurTime();
+  /*timeStr time = getCurTime();
   if (wa.machineState != WORK) {
     setBlue(10);
     setRed(0);
@@ -312,7 +305,10 @@ void lghtsMgmnt() {
       setBlue(10 - time.msec / 100);
       setRed(10 - time.msec / 100);
     }
-  }
+    
+  }*/
+
+  
 }
 
 void ADCMgmnt() {
@@ -454,6 +450,7 @@ int main(void)
   
   
   COOLER_ON();
+  B_ON();
   HAL_ADCEx_InjectedStart(&hadc1);
   setupDefaultLitersVolume(50);
   //__HAL_RCC_WWDG_CLK_ENABLE();
