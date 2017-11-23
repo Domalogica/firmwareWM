@@ -202,7 +202,7 @@ void SysTick_Handler(void)
 void WWDG_IRQHandler(void)
 {
   /* USER CODE BEGIN WWDG_IRQn 0 */
-  NVIC_SystemReset();
+  //NVIC_SystemReset();
   /* USER CODE END WWDG_IRQn 0 */
   HAL_WWDG_IRQHandler(&hwwdg);
   /* USER CODE BEGIN WWDG_IRQn 1 */
@@ -319,7 +319,7 @@ void TIM3_IRQHandler(void)
   checkMagistralPressure();
   checkOut10Counter();
   //checkInput10Counter();
-  
+    
   static pumpEnum lastConsumPump = STOPPED;
   static uint16_t millisCounter = 0;
   if (lastConsumPump != wa.consumerPump) {

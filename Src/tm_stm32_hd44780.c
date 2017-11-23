@@ -99,7 +99,7 @@ HD44780_Options_t HD44780_Opts;
 #define HD44780_E_LOW               E_CLR()
 #define HD44780_E_HIGH              E_SET()
 
-#define HD44780_E_BLINK             E_SET(); HD44780_Delay(60); E_CLR(); HD44780_Delay(60)
+#define HD44780_E_BLINK             E_SET(); HD44780_Delay(15); E_CLR(); HD44780_Delay(15)
 //#define HD44780_E_BLINK             E_SET(); HD44780_Delay(300); E_CLR(); HD44780_Delay(300)
 #define HD44780_Delay(x)            delayMicroseconds(x)
 
@@ -199,7 +199,7 @@ void TM_HD44780_Init(uint8_t cols, uint8_t rows, uint32_t timeToShowStartMes) {
   // записываем их в ОЗУ ЖКИ 
   char lit0[17] = {' ', ' ', ' ',  _D, 'o', _m, 'a', _l, 'o', _g, _i, _k, 'a', ' ', ' ', ' ', '\0'};
   TM_HD44780_Puts(0, 0, &lit0[0]);
-  char lit1[17] = {' ', ' ', 'B', 'o', _d, 'o', _m, 'a', _t, ' ', 'v', '0', '.', '1', '2', 'i ', '\0'};
+  char lit1[17] = {' ', ' ', 'B', 'o', _d, 'o', _m, 'a', _t, ' ', 'v', '0', '.', '1', '2', 'i', '\0'};
   TM_HD44780_Puts(0, 1, &lit1[0]);
   delayMilliseconds(timeToShowStartMes);
   TM_HD44780_Clear();
@@ -207,7 +207,7 @@ void TM_HD44780_Init(uint8_t cols, uint8_t rows, uint32_t timeToShowStartMes) {
 
 void TM_HD44780_Clear(void) {
 	TM_HD44780_Cmd(HD44780_CLEARDISPLAY);
-	HD44780_Delay(3500);
+	HD44780_Delay(350);
 }
 
 void TM_HD44780_Puts(uint8_t x, uint8_t y, char* str) {

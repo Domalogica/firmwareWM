@@ -35,6 +35,7 @@
   *
   ******************************************************************************
   */
+
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f1xx_hal.h"
@@ -154,7 +155,7 @@ void containerMgmnt() {
     static uint32_t waterInCounter = 0;
     if (wa.magistralPressure == HI_PRESSURE && wa.container != FULL) {
       if (wa.mainPump != WORKING) {
-        delayMilliseconds(100);
+        //delayMilliseconds(100);
         if (wa.magistralPressure == HI_PRESSURE) {
           MAINV_ON();
           MAINP_ON();
@@ -414,7 +415,7 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USART3_UART_Init();
   MX_IWDG_Init();
-  //MX_WWDG_Init();
+  MX_WWDG_Init();
 
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim3);
@@ -447,18 +448,16 @@ int main(void)
   GPIO_InitStruct2.Mode = GPIO_MODE_INPUT;
   HAL_GPIO_Init(NINT_IN20_GPIO_Port, &GPIO_InitStruct2);
 #endif
-  
-  
   COOLER_ON();
   B_ON();
   HAL_ADCEx_InjectedStart(&hadc1);
   setupDefaultLitersVolume(50);
-  //__HAL_RCC_WWDG_CLK_ENABLE();
-  //__HAL_IWDG_START(&hiwdg);
   
   while (1)
   {
 ////// MANAGE STUFF   
+    HAL_WWDG_Refresh(&hwwdg);           // 43.9 ms to reset (IRQ handler used to inform)
+    HAL_IWDG_Refresh(&hiwdg);           // 3000 ms to reset (no handler)
     ADCMgmnt();
     containerMgmnt();
     uartDataExchMgmnt();
@@ -466,8 +465,6 @@ int main(void)
     outPumpMgmnt();
     buttonMgmnt();
     lghtsMgmnt();
-    HAL_IWDG_Refresh(&hiwdg);
-    //HAL_WWDG_Refresh(&hwwdg);
       
     if (wa.machineState == WAIT) {
     }
@@ -747,8 +744,8 @@ static void MX_IWDG_Init(void)
 {
 
   hiwdg.Instance = IWDG;
-  hiwdg.Init.Prescaler = IWDG_PRESCALER_128;
-  hiwdg.Init.Reload = 1500;
+  hiwdg.Init.Prescaler = IWDG_PRESCALER_32;
+  hiwdg.Init.Reload = 4000;
   if (HAL_IWDG_Init(&hiwdg) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
