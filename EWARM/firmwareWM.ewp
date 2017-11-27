@@ -38,7 +38,7 @@
         </option>
         <option>
           <name>Input description</name>
-          <state></state>
+          <state>Full formatting.</state>
         </option>
         <option>
           <name>Output variant</name>
@@ -47,7 +47,7 @@
         </option>
         <option>
           <name>Output description</name>
-          <state></state>
+          <state>Full formatting.</state>
         </option>
         <option>
           <name>GOutputBinary</name>
@@ -247,7 +247,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>11111110</state>
+          <state>00000000</state>
         </option>
         <option>
           <name>CCDebugInfo</name>
@@ -339,7 +339,7 @@
         </option>
         <option>
           <name>CCOptLevel</name>
-          <state>3</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCOptStrategy</name>
@@ -348,7 +348,7 @@
         </option>
         <option>
           <name>CCOptLevelSlave</name>
-          <state>3</state>
+          <state>1</state>
         </option>
         <option>
           <name>CompilerMisraRules98</name>
@@ -987,6 +987,9 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\Src\moneyAcceptMgmnt.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Src\oneWire.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\Src\portsMgmnt.c</name>

@@ -74,7 +74,7 @@ void setUpCheckGPIO() {
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   GPIO_InitStruct.Pin = OUT5_Pin|OUT6_Pin|OUT7_Pin|NINT_TEMP3_Pin|NINT_IN13_Pin|NINT_IN12_Pin|
-                        NINT_IN11_Pin|NINT_IN10_Pin|INT_IN9_Pin|INT_IN8_Pin|INT_IN7_Pin;
+                        NINT_IN11_Pin|StrTemp_Pin|OutTemp_Pin|MotorTemp_Pin|INT_IN7_Pin;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   GPIO_InitStruct.Pin = GPIO7_Pin|GPIO6_Pin|GPIO5_Pin|GPIO4_Pin|GPIO3_Pin|GPIO2_Pin|
@@ -173,11 +173,11 @@ void setupIn() {
               break;
     case 6:   HAL_GPIO_WritePin(INT_IN7_GPIO_Port, INT_IN7_Pin, state);
               break;
-    case 7:   HAL_GPIO_WritePin(INT_IN8_GPIO_Port, INT_IN8_Pin, state);
+    case 7:   HAL_GPIO_WritePin(OutTemp_GPIO_Port, OutTemp_Pin, state);
               break;
-    case 8:   HAL_GPIO_WritePin(INT_IN9_GPIO_Port, INT_IN9_Pin, state);
+    case 8:   HAL_GPIO_WritePin(MotorTemp_GPIO_Port, MotorTemp_Pin, state);
               break;
-    case 9:   HAL_GPIO_WritePin(NINT_IN10_GPIO_Port, NINT_IN10_Pin, state);
+    case 9:   HAL_GPIO_WritePin(StrTemp_GPIO_Port, StrTemp_Pin, state);
               break;
     case 10:  HAL_GPIO_WritePin(NINT_IN11_GPIO_Port, NINT_IN11_Pin, state);
               break;
@@ -279,6 +279,7 @@ void setupPwrOut() {
   }
 }
 
+
 void clrAll() {
   HAL_GPIO_WritePin(GPIOC, OUT3_Pin|OUT4_Pin|PWR5_Pin|PWR4_Pin|PWR3_Pin|PWR2_Pin, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(GPIOA, OUT1_Pin|OUT2_Pin|PWR1_Pin|W26_DO_Pin, GPIO_PIN_RESET);
@@ -293,9 +294,9 @@ void clrAll() {
   HAL_GPIO_WritePin(INT_IN5_GPIO_Port, INT_IN5_Pin, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(INT_IN6_GPIO_Port, INT_IN6_Pin, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(INT_IN7_GPIO_Port, INT_IN7_Pin, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(INT_IN8_GPIO_Port, INT_IN8_Pin, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(INT_IN9_GPIO_Port, INT_IN9_Pin, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(NINT_IN10_GPIO_Port, NINT_IN10_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(OutTemp_GPIO_Port, OutTemp_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(MotorTemp_GPIO_Port, MotorTemp_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(StrTemp_GPIO_Port, StrTemp_Pin, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(NINT_IN11_GPIO_Port, NINT_IN11_Pin, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(NINT_IN12_GPIO_Port, NINT_IN12_Pin, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(NINT_IN13_GPIO_Port, NINT_IN13_Pin, GPIO_PIN_RESET);

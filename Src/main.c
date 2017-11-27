@@ -46,6 +46,7 @@
 #include "uartDataExchMgmnt.h"
 #include "debugPCBMode.h"
 #include "tm_stm32_hd44780.h"
+#include "oneWire.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -146,7 +147,6 @@ void containerMgmnt() {
     wa.container = NOT_FULL;
   
   checkMagistralPressure();
-  
   
   static bool noInWater = false;
   static timeStr inPumpStopped = {0};
@@ -373,8 +373,8 @@ uint32_t getNoTareProtTime (noTareStageEnum noTare) {
       return 30000;
     case SIXTY:  
       return 60000;
-  default: 
-    return 60000;
+    default: 
+      return 60000;
   }
 }
 
@@ -453,6 +453,10 @@ int main(void)
   HAL_ADCEx_InjectedStart(&hadc1);
   setupDefaultLitersVolume(50);
   
+  HAL_WWDG_Refresh(&hwwdg);           // 43.9 ms to reset (IRQ handler used to inform)
+  HAL_IWDG_Refresh(&hiwdg);           // 3000 ms to reset (no handler)
+  ds18b20Init();  
+  
   while (1)
   {
 ////// MANAGE STUFF   
@@ -481,8 +485,8 @@ int main(void)
       money.leftFromPaid = money.sessionPaid - (((double)cnt.milLitWentOut - (double)lastMilLitWentOut) / 1000.0) * waterPrice;      
       int32_t moneyInt = (int32_t) money.leftFromPaid;
       if (moneyInt <= 0) {
-        uint32_t temp = cnt.milLitWentOut;
-        while(cnt.milLitWentOut < temp + 20);
+        //uint32_t temp = cnt.milLitWentOut;
+        //while(cnt.milLitWentOut < temp + 20);
         wa.machineState = WAIT;
         prepareToTransition();
         money.totalPaid += money.sessionPaid - (uint32_t)money.leftFromPaid;
@@ -923,6 +927,9 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOD, GPIO7_Pin|GPIO6_Pin|GPIO5_Pin|GPIO4_Pin 
                           |GPIO3_Pin|GPIO2_Pin|GPIO1_Pin|PWR6_Pin, GPIO_PIN_RESET);
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, OutTemp_Pin|MotorTemp_Pin|StrTemp_Pin, GPIO_PIN_SET);
+
   /*Configure GPIO pins : INT_IN4_Pin INT_IN3_Pin INT_IN2_Pin INT_IN1_Pin */
   GPIO_InitStruct.Pin = INT_IN4_Pin|INT_IN3_Pin|INT_IN2_Pin|INT_IN1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
@@ -993,17 +1000,23 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : NINT_IN13_Pin NINT_IN12_Pin NINT_IN11_Pin NINT_IN10_Pin */
-  GPIO_InitStruct.Pin = NINT_IN13_Pin|NINT_IN12_Pin|NINT_IN11_Pin|NINT_IN10_Pin;
+  /*Configure GPIO pins : NINT_IN13_Pin NINT_IN12_Pin NINT_IN11_Pin */
+  GPIO_InitStruct.Pin = NINT_IN13_Pin|NINT_IN12_Pin|NINT_IN11_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : INT_IN9_Pin INT_IN8_Pin INT_IN7_Pin */
-  GPIO_InitStruct.Pin = INT_IN9_Pin|INT_IN8_Pin|INT_IN7_Pin;
+  /*Configure GPIO pins : OutTemp_Pin MotorTemp_Pin StrTemp_Pin */
+  GPIO_InitStruct.Pin = OutTemp_Pin|MotorTemp_Pin|StrTemp_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : INT_IN7_Pin */
+  GPIO_InitStruct.Pin = INT_IN7_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+  HAL_GPIO_Init(INT_IN7_GPIO_Port, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI0_IRQn, 2, 0);

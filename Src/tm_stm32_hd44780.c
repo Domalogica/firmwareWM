@@ -99,7 +99,7 @@ HD44780_Options_t HD44780_Opts;
 #define HD44780_E_LOW               E_CLR()
 #define HD44780_E_HIGH              E_SET()
 
-#define HD44780_E_BLINK             E_SET(); HD44780_Delay(15); E_CLR(); HD44780_Delay(15)
+#define HD44780_E_BLINK             E_SET(); HD44780_Delay(20); E_CLR(); HD44780_Delay(20)
 //#define HD44780_E_BLINK             E_SET(); HD44780_Delay(300); E_CLR(); HD44780_Delay(300)
 #define HD44780_Delay(x)            delayMicroseconds(x)
 
