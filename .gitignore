@@ -6,6 +6,7 @@
 *.xcl  
 *.dni  
 *.wsdt  
+*.linf  
 *.wspos  
 
 # IAR Debug Exe  
