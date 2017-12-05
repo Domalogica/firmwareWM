@@ -164,9 +164,9 @@ void pauseOutHandler(){
   waterCounters.containerPause++;
   
   if (getTimeDiff(lastTime) < 500) fastPulseLoseOut++;
-  else fastPulseLoseOut = 0;
+    else fastPulseLoseOut = 0;
   
-  if (fastPulseLoseOut > FAST_PULSES_NUM_TRESHOLD) {
+  if (fastPulseLoseOut > FAST_PULSES_NUM_TRESHOLD){
     wa.waterMissDetected = true;
   }
   writeTime(&lastTime);
@@ -309,7 +309,7 @@ void checkInput10Counter(){
   if (temp++ < 5) return;
   temp = 0;
   
-  inDataIN[p++] = READ_10L_IN();
+  //inDataIN[p++] = READ_10L_IN();
   if (p > 9) p = 0;
   
   static uint32_t in101 = 0, in102 = 0;

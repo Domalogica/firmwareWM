@@ -168,7 +168,7 @@ void containerMgmnt() {
       writeTime(&lastContInPulseTime);
     }
     if (getTimeDiff(lastContInPulseTime) > 40*1000 && wa.mainPump == WORKING) {
-      noInWater = true;
+      //noInWater = true;
       writeTime(&inPumpStopped);
     }
   }
@@ -282,7 +282,7 @@ void lcdMgmnt() {
 } 
 
 void lghtsMgmnt() {
-  setGlobal(10);
+  //setGlobal(10);
   /*timeStr time = getCurTime();
   if (wa.machineState != WORK) {
     setBlue(10);

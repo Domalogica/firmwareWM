@@ -6,7 +6,7 @@
 *.xcl  
 *.dni  
 *.wsdt  
-*.wspos  
+*.wspos 
 
 # IAR Debug Exe  
 *.sim  
@@ -15,6 +15,7 @@
 *.dep
 *.ewt
 *.ewd
+*.ewp
 *.browse
 *.bat
 *.mxproject
