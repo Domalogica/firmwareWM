@@ -156,12 +156,10 @@
 #define W26_DI_Pin GPIO_PIN_10
 #define W26_DI_GPIO_Port GPIOC
 #define W26_DI_EXTI_IRQn EXTI15_10_IRQn
-#define INT_TEMP2_Pin GPIO_PIN_11
-#define INT_TEMP2_GPIO_Port GPIOC
-#define INT_TEMP2_EXTI_IRQn EXTI15_10_IRQn
-#define INT_TEMP1_Pin GPIO_PIN_12
-#define INT_TEMP1_GPIO_Port GPIOC
-#define INT_TEMP1_EXTI_IRQn EXTI15_10_IRQn
+#define NINT_TEMP2_Pin GPIO_PIN_11
+#define NINT_TEMP2_GPIO_Port GPIOC
+#define NINT_TEMP1_Pin GPIO_PIN_12
+#define NINT_TEMP1_GPIO_Port GPIOC
 #define NINT_IN21_Pin GPIO_PIN_0
 #define NINT_IN21_GPIO_Port GPIOD
 #define NINT_IN20_Pin GPIO_PIN_1
@@ -184,21 +182,19 @@
 #define NINT_IN12_GPIO_Port GPIOB
 #define NINT_IN11_Pin GPIO_PIN_5
 #define NINT_IN11_GPIO_Port GPIOB
-#define OutTemp_Pin GPIO_PIN_6
-#define OutTemp_GPIO_Port GPIOB
-#define MotorTemp_Pin GPIO_PIN_7
-#define MotorTemp_GPIO_Port GPIOB
-#define StrTemp_Pin GPIO_PIN_8
-#define StrTemp_GPIO_Port GPIOB
+#define NINT_IN10_Pin GPIO_PIN_6
+#define NINT_IN10_GPIO_Port GPIOB
+#define NINT_IN9_Pin GPIO_PIN_7
+#define NINT_IN9_GPIO_Port GPIOB
+#define NINT_IN8_Pin GPIO_PIN_8
+#define NINT_IN8_GPIO_Port GPIOB
 #define INT_IN7_Pin GPIO_PIN_9
 #define INT_IN7_GPIO_Port GPIOB
 #define INT_IN7_EXTI_IRQn EXTI9_5_IRQn
-#define INT_IN6_Pin GPIO_PIN_0
-#define INT_IN6_GPIO_Port GPIOE
-#define INT_IN6_EXTI_IRQn EXTI0_IRQn
-#define INT_IN5_Pin GPIO_PIN_1
-#define INT_IN5_GPIO_Port GPIOE
-#define INT_IN5_EXTI_IRQn EXTI1_IRQn
+#define NINT_IN6_Pin GPIO_PIN_0
+#define NINT_IN6_GPIO_Port GPIOE
+#define NINT_IN5_Pin GPIO_PIN_1
+#define NINT_IN5_GPIO_Port GPIOE
 
 /* ########################## Assert Selection ############################## */
 /**
@@ -321,7 +317,6 @@ typedef struct {
   uint32_t litersLeftFromSession;               // осталось литров выдать клиенту в текущей сессии
   uint32_t currentContainerVolume;              // количество воды в контейнере сейчас
   uint16_t suppVoltage;                         // напряжение питания
-  uint16_t tempMCU;                             // температура МК
   billAccept billAccept;                        // запрещено/разрешено принимать деньги
   bool waterMissDetected;                       // true, если обнаружена утечка воды при выдаче
   tempMgmnt warmer;
@@ -332,6 +327,14 @@ typedef struct {
   valveEnum washFilValve;                       // состояние промывосного клапана
   pumpEnum consumerPump;                        // состояние выходного насоса  
   pumpEnum mainPump;                            // состояние магистрального насоса
+  
+  uint16_t tempMCU;                             // температура МК
+  int8_t OutTp;                                 // наружная температура
+  int8_t MotorTp;                               // температура насоса
+  int8_t StreetTp;                              // температура на улице
+  int8_t inWaterTp;                             // температура входной воды
+  int8_t cntWaterTp;                            // температура емкости
+  int8_t boardTp;                               // температура платы
   
   waterPressureEnum magistralPressure;          // есть ли давление в магистрали
   tumperEnum tumperMoney;                       // состояние тампера по деньгам
@@ -368,8 +371,10 @@ typedef struct {
 
 extern void delayMicroseconds(uint32_t );       // assembler delay.s
 extern void delayMilliseconds(uint32_t );       // assembler delay.s
-void prepareToTransition();
 
+
+void readAdc(uint16_t * suppVolCH4, uint16_t * adcCH5, uint16_t * adcTempMCU, uint16_t * intRef);
+void refreshWatchDogs();
 
 /* USER CODE END Private defines */
 

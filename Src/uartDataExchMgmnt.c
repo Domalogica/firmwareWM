@@ -86,6 +86,21 @@ uint8_t writeError (uint8_t errCode) {
   return 0;
 }
 
+// answer for 'u' response 
+uint16_t insertUID (uint8_t * uartTxBuf) {
+  uint16_t byteCounter = 0;
+  uint32_t uid[3];
+  HAL_GetUID(&uid[0]); 
+  *(uartTxBuf + byteCounter) = '"';  byteCounter++;      
+  byteCounter += sprintf((char*)(uartTxBuf + byteCounter), "0x%08x", uid[0]);
+  byteCounter += sprintf((char*)(uartTxBuf + byteCounter), "%08x", uid[1]);
+  byteCounter += sprintf((char*)(uartTxBuf + byteCounter), "%08x", uid[2]);
+  *(uartTxBuf + byteCounter) = '"';  byteCounter++;      
+
+  *(uartTxBuf + byteCounter) = '\n'; byteCounter++;      
+  return byteCounter;
+}
+
 // create answer for 'g' response
 uint16_t insertStats (uint8_t * uartTxBuf) {
   uint16_t byteCounter = 0;
@@ -152,6 +167,9 @@ uint16_t insertStats (uint8_t * uartTxBuf) {
   byteCounter += sprintf((char*)(uartTxBuf + byteCounter), "%d", wa.washFilValve);
   *(uartTxBuf + byteCounter) = ',';  byteCounter++;
   
+  byteCounter += sprintf((char*)(uartTxBuf + byteCounter), "%d", wa.warmer);
+  *(uartTxBuf + byteCounter) = ',';  byteCounter++;
+  
   byteCounter += sprintf((char*)(uartTxBuf + byteCounter), "%d", wa.tumperMoney);
   *(uartTxBuf + byteCounter) = ',';  byteCounter++;
 
@@ -173,22 +191,25 @@ uint16_t insertStats (uint8_t * uartTxBuf) {
   uint8_t everythingOKbit = 1;
   byteCounter += sprintf((char*)(uartTxBuf + byteCounter), "%d", everythingOKbit);
   *(uartTxBuf + byteCounter) = ',';  byteCounter++;      
-
-  uint32_t uid[3];
-  HAL_GetUID(&uid[0]);                                                          // printf("0x%08x\n", i);       // gives 0x00000007
-  *(uartTxBuf + byteCounter) = '"';  byteCounter++;      
-  byteCounter += sprintf((char*)(uartTxBuf + byteCounter), "0x%08x", uid[0]);
-  byteCounter += sprintf((char*)(uartTxBuf + byteCounter), "%08x", uid[1]);
-  byteCounter += sprintf((char*)(uartTxBuf + byteCounter), "%08x", uid[2]);
-  *(uartTxBuf + byteCounter) = '"';  byteCounter++;      
-  *(uartTxBuf + byteCounter) = ',';  byteCounter++;      
-  
-  byteCounter += sprintf((char*)(uartTxBuf + byteCounter), "%d", wa.tempMCU);
-  *(uartTxBuf + byteCounter) = ',';  byteCounter++;      
   
   byteCounter += sprintf((char*)(uartTxBuf + byteCounter), "%d", valFor10LitOutCalibr);
-  *(uartTxBuf + byteCounter) = ']';  byteCounter++;
+  *(uartTxBuf + byteCounter) = ',';  byteCounter++;      
+
+  byteCounter += sprintf((char*)(uartTxBuf + byteCounter), "%d", wa.tempMCU);
+  *(uartTxBuf + byteCounter) = ',';  byteCounter++;      
+  byteCounter += sprintf((char*)(uartTxBuf + byteCounter), "%d", wa.boardTp);
+  *(uartTxBuf + byteCounter) = ',';  byteCounter++;      
+  byteCounter += sprintf((char*)(uartTxBuf + byteCounter), "%d", wa.OutTp);
+  *(uartTxBuf + byteCounter) = ',';  byteCounter++;      
+  byteCounter += sprintf((char*)(uartTxBuf + byteCounter), "%d", wa.StreetTp);
+  *(uartTxBuf + byteCounter) = ',';  byteCounter++;      
+  byteCounter += sprintf((char*)(uartTxBuf + byteCounter), "%d", wa.inWaterTp);
+  *(uartTxBuf + byteCounter) = ',';  byteCounter++;      
+  byteCounter += sprintf((char*)(uartTxBuf + byteCounter), "%d", wa.cntWaterTp);
+  *(uartTxBuf + byteCounter) = ',';  byteCounter++;      
+  byteCounter += sprintf((char*)(uartTxBuf + byteCounter), "%d", wa.MotorTp);
   
+  *(uartTxBuf + byteCounter) = ']';  byteCounter++;  
   *(uartTxBuf + byteCounter) = '\n'; byteCounter++;      
   return byteCounter;
 }
@@ -262,6 +283,16 @@ uint16_t parseUartData(uint8_t * uartTXBuf) {
     if (getMessageLnhgt() == 2) {      
       txByteCounter += writeError(0);
       txByteCounter += insertStats(&uartTXBuf[2]);
+    }
+    return txByteCounter;
+  }
+
+  if (mesRx[0] == 'u') {
+    if (getMessageLnhgt() > 2) txByteCounter += writeError(3);
+    if (getMessageLnhgt() < 2) txByteCounter += writeError(2);
+    if (getMessageLnhgt() == 2) {      
+      txByteCounter += writeError(0);
+      txByteCounter += insertUID(&uartTXBuf[2]);
     }
     return txByteCounter;
   }

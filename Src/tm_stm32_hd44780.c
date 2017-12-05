@@ -199,7 +199,7 @@ void TM_HD44780_Init(uint8_t cols, uint8_t rows, uint32_t timeToShowStartMes) {
   // записываем их в ОЗУ ЖКИ 
   char lit0[17] = {' ', ' ', ' ',  _D, 'o', _m, 'a', _l, 'o', _g, _i, _k, 'a', ' ', ' ', ' ', '\0'};
   TM_HD44780_Puts(0, 0, &lit0[0]);
-  char lit1[17] = {' ', ' ', 'B', 'o', _d, 'o', _m, 'a', _t, ' ', 'v', '0', '.', '1', '2', 'i', '\0'};
+  char lit1[17] = {' ', ' ', 'B', 'o', _d, 'o', _m, 'a', _t, ' ', 'v', '0', '.', '1', '4', ' ', '\0'};
   TM_HD44780_Puts(0, 1, &lit1[0]);
   delayMilliseconds(timeToShowStartMes);
   TM_HD44780_Clear();

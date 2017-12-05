@@ -133,9 +133,6 @@ void checkNoTare() {
   
   inNoTareState = !(temp == 0);
 
-  
-  
-  
   if (getTimeDiff(noSenseTime) < NO_SENSE_TIME_AFTER_TRIGGER) return;
   
   if (inNoTareState == 0) {
