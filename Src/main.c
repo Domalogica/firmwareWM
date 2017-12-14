@@ -167,7 +167,7 @@ void containerMgmnt() {
       waterInCounter = counterContIn + 20;
       writeTime(&lastContInPulseTime);
     }
-    if (getTimeDiff(lastContInPulseTime) > 40*1000 && wa.mainPump == WORKING) {
+    if (getTimeDiff(lastContInPulseTime) > 120*60*1000 && wa.mainPump == WORKING) {
       //noInWater = true;
       writeTime(&inPumpStopped);
     }
@@ -178,7 +178,7 @@ void containerMgmnt() {
       MAINV_OFF();
       WASH_FILV_OFF();
     }
-    if (getTimeDiff(inPumpStopped) > 5*60*1000) noInWater = false;
+    if (getTimeDiff(inPumpStopped) > 15*60*1000) noInWater = false;
   }
   
   if (wa.magistralPressure == NO_PRESSURE || wa.container == FULL) {
