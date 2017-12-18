@@ -15,6 +15,8 @@ void checkCoinMoney(void) {
       if (getTimeDiff(trueTime) > 5) {
         money.sessionPaid += 100;
         money.leftFromPaid += 100.0;            // в копейках
+        money.hardCash += 100;
+        totalHardCash();
       }
       trueFlag = false;
     }
@@ -36,6 +38,8 @@ void checkMoney(void) {
       if (getTimeDiff(trueTime) > 5) {
         money.sessionPaid += 1000;
         money.leftFromPaid += 1000.0;           // в копейках
+        money.hardMoney += 1000;
+        totalHardCash();
       }
       trueFlag = false;
     }
@@ -46,4 +50,9 @@ void checkMoney(void) {
       trueFlag = true;
     }
   }
+}
+
+uint32_t totalHardCash(void){
+  money.tatalHardCash = money.hardCash + money.hardMoney;
+  return money.tatalHardCash;
 }

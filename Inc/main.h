@@ -234,6 +234,9 @@
 
 typedef struct {
   uint32_t totalPaid;
+  uint32_t hardCash;
+  uint32_t hardMoney;
+  uint32_t tatalHardCash;
   volatile uint32_t sessionPaid;
   float leftFromPaid;
 } moneyStats;

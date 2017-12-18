@@ -3,6 +3,7 @@
 
 void checkCoinMoney(void);
 void checkMoney(void);
+uint32_t totalHardCash(void);
 
 #define COIN_PORT       NINT_IN13_GPIO_Port             // PB3, R25, 8
 #define COIN_PIN        NINT_IN13_Pin

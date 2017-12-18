@@ -4,6 +4,7 @@ timeStr time;
 
 void timeMgmnt(void) {
   time.msec++;
+  time.millis++;
   if (time.msec > 999) {
     time.msec = 0;
     time.sec++;

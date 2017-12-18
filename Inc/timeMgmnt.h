@@ -8,6 +8,7 @@ typedef struct {
   uint8_t min;
   uint8_t sec;
   uint16_t msec;
+  uint32_t millis;
 } timeStr; 
 
 // возвращает  текущее время

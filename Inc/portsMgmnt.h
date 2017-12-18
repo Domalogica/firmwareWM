@@ -42,6 +42,10 @@
 #define MOSFET2_ON()            HAL_GPIO_WritePin(MOSFET2_GPIO_Port, MOSFET2_Pin, GPIO_PIN_SET)
 #define MOSFET2_OFF()           HAL_GPIO_WritePin(MOSFET2_GPIO_Port, MOSFET2_Pin, GPIO_PIN_RESET)
 
+
+#define MOSFET1_ON() HAL_GPIO_WritePin(MOSFET1_GPIO_Port, MOSFET1_Pin, GPIO_PIN_SET)
+#define MOSFET1_OFF() HAL_GPIO_WritePin(MOSFET1_GPIO_Port, MOSFET1_Pin, GPIO_PIN_RESET)
+
 #define TURN_BUT_LED_ON()       OUT7SET()
 #define TURN_BUT_LED_OFF()      OUT7CLR()
 
@@ -100,6 +104,9 @@
 
 #define GLOBAL_LGHT_ON() MOSFET2_ON()
 #define GLOBAL_LGHT_OFF() MOSFET2_OFF()
+
+#define DREINAGE_PUMP_ON() MOSFET1_ON()
+#define DREINAGE_PUMP_OFF() MOSFET1_OFF()
 
 void checkTumperDoor();
 void checkMagistralPressure();

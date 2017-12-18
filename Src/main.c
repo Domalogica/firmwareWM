@@ -69,6 +69,8 @@ WWDG_HandleTypeDef hwwdg;
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 extern volatile uint32_t counterContIn;
+extern timeStr time; 
+
 
 timeStr timeConsPumpStarted;
 static noTareStageEnum noTareStage = THREE;
@@ -162,7 +164,8 @@ void containerMgmnt() {
         }
       }
     }
-    if (wa.mainPump != WORKING) writeTime(&lastContInPulseTime);
+    if (wa.mainPump != WORKING)
+      writeTime(&lastContInPulseTime);
     if (counterContIn > waterInCounter && wa.mainPump == WORKING) {
       waterInCounter = counterContIn + 20;
       writeTime(&lastContInPulseTime);
@@ -178,7 +181,8 @@ void containerMgmnt() {
       MAINV_OFF();
       WASH_FILV_OFF();
     }
-    if (getTimeDiff(inPumpStopped) > 15*60*1000) noInWater = false;
+    if (getTimeDiff(inPumpStopped) > 15*60*1000) 
+      noInWater = false;
   }
   
   if (wa.magistralPressure == NO_PRESSURE || wa.container == FULL) {
@@ -377,7 +381,47 @@ uint32_t getNoTareProtTime (noTareStageEnum noTare) {
   }
 }
 
+void blink(){
+  static uint32_t timer = 0;
+  static uint8_t b = 0;
+  
+  static bool fullDriage = 0; 
+  static uint8_t flterSignal[10] = {1};
+  static int indexFilter = 0;
+  
+  flterSignal[indexFilter++] = HAL_GPIO_ReadPin(INT_IN6_GPIO_Port, INT_IN6_Pin);
+  if (indexFilter > 9) 
+    indexFilter = 0;
+  
+  uint8_t temp = 0;
+  for (int i = 0; i < 9; i++){
+    temp += (uint8_t)flterSignal[i];
+  }
+  
+  fullDriage = !(temp == 0);
+
+  if (!fullDriage){
+    b = 1;
+    
+  }
+  if (b && (time.millis - timer > 60000)){
+    timer = time.millis;
+    b = 0;
+  }
+  
+  
+  if (b!=1){
+    DREINAGE_PUMP_OFF();
+  }else{
+    DREINAGE_PUMP_ON();
+  }
+}
+
+
+
 /* USER CODE END 0 */
+
+
 
 int main(void)
 {
@@ -394,7 +438,7 @@ int main(void)
   /* USER CODE BEGIN Init */
   MX_GPIO_Init();
   TM_HD44780_Init(16, 2, 1);
-  /* USER CODE END Init */
+  /* USER CODE END Init */ 
 
   /* Configure the system clock */
   SystemClock_Config();
@@ -458,6 +502,7 @@ int main(void)
   
   while (1)
   {
+    blink();
 ////// MANAGE STUFF   
     ADCMgmnt();
     containerMgmnt();
