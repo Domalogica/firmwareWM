@@ -134,6 +134,15 @@ uint16_t insertStats (uint8_t * uartTxBuf) {
   byteCounter += sprintf((char*)(uartTxBuf + byteCounter), "%d", money.totalPaid);
   *(uartTxBuf + byteCounter) = ',';  byteCounter++;
   
+    byteCounter += sprintf((char*)(uartTxBuf + byteCounter), "%d", money.tatalHardCash);
+  *(uartTxBuf + byteCounter) = ',';  byteCounter++;
+  
+  byteCounter += sprintf((char*)(uartTxBuf + byteCounter), "%d", money.hardCash);
+  *(uartTxBuf + byteCounter) = ',';  byteCounter++;
+  
+  byteCounter += sprintf((char*)(uartTxBuf + byteCounter), "%d", money.hardMoney);
+  *(uartTxBuf + byteCounter) = ',';  byteCounter++;
+  
   byteCounter += sprintf((char*)(uartTxBuf + byteCounter), "%d", money.sessionPaid);
   *(uartTxBuf + byteCounter) = ',';  byteCounter++;
   
