@@ -122,7 +122,7 @@ int main(void)
 
   /* USER CODE BEGIN Init */
   MX_GPIO_Init();
-  TM_HD44780_Init(16, 2, 300);
+  TM_HD44780_Init(16, 2, 1);
   /* USER CODE END Init */
 
   /* Configure the system clock */

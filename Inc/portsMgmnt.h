@@ -86,6 +86,9 @@
 #define READ_10L_OUT()          HAL_GPIO_ReadPin(NINT_IN20_GPIO_Port, NINT_IN20_Pin)            // 3, R5, PD2
 #define READ_10L_IN()           HAL_GPIO_ReadPin(NINT_IN19_GPIO_Port, NINT_IN19_Pin)            // 2, R6, PD1
 
+#define LED_ON()                HAL_GPIO_WritePin(GPIO5_GPIO_Port, GPIO5_Pin, GPIO_PIN_SET)
+#define LED_OFF()               HAL_GPIO_WritePin(GPIO5_GPIO_Port, GPIO5_Pin, GPIO_PIN_RESET)
+
 #define R_ON() OUT9SET()
 #define R_OFF() OUT9CLR()
 

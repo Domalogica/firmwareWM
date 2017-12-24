@@ -274,7 +274,7 @@ void EXTI9_5_IRQHandler(void)
 void TIM3_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM3_IRQn 0 */
-  refreshWatchDogs();
+  //refreshWatchDogs();
 
   /* USER CODE END TIM3_IRQn 0 */
   HAL_TIM_IRQHandler(&htim3);
@@ -346,6 +346,8 @@ void TIM3_IRQHandler(void)
   if (time.msec % 10 >= 10 - wmLghts.global) GLOBAL_LGHT_ON();
   else GLOBAL_LGHT_OFF();
   */
+  if (time.sec%2) LED_ON();
+  else LED_OFF();
   /* USER CODE END TIM3_IRQn 1 */
 }
 

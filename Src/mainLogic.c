@@ -11,7 +11,6 @@
 
 void prepareToTransition ();
 
-
 extern volatile uint32_t counterContIn;
 
 timeStr timeConsPumpStarted;
@@ -55,7 +54,7 @@ void containerMgmnt() {
   
   if (wa.magistralPressure == HI_PRESSURE && wa.container != FULL) {
     if (wa.mainPump != WORKING) {
-      delayMilliseconds(100);
+      //delayMilliseconds(100);
       if (wa.magistralPressure == HI_PRESSURE) {
         MAINV_ON();
         MAINP_ON();
@@ -298,6 +297,8 @@ void mainSetup() {
   setupDefaultLitersVolume(50);
   
   refreshWatchDogs();
+//  __HAL_DBGMCU_UNFREEZE_IWDG();
+      
   ds18b20Init();  
   wa.OutTp = 25;
 }
